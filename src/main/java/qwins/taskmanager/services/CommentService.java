@@ -2,8 +2,8 @@ package qwins.taskmanager.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qwins.taskmanager.model.Comment;
-import qwins.taskmanager.model.Task;
+import qwins.taskmanager.models.Comment;
+import qwins.taskmanager.models.Task;
 import qwins.taskmanager.repositories.CommentRepository;
 
 import java.util.List;
@@ -17,8 +17,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment saveComment(Comment comment) {
-        return commentRepository.save(comment);
+    public void createNewComment(Comment comment) {
+        commentRepository.save(comment);
     }
 
     public List<Comment> getCommentsByTask(Task task) {

@@ -2,7 +2,7 @@ package qwins.taskmanager.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qwins.taskmanager.model.Task;
+import qwins.taskmanager.models.Task;
 import qwins.taskmanager.repositories.TaskRepository;
 
 import java.util.List;
@@ -17,19 +17,19 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    List<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    Task getTaskById(long id) {
+    public Task getTaskById(long id) {
         return taskRepository.findById(id).orElse(null);
     }
 
-    Task saveTask(Task task) {
-        return taskRepository.save(task);
+    public void createNewTask(Task task) {
+        taskRepository.save(task);
     }
 
-    Task updateTask(long id, Task updatedTask) {
+    public Task updateTask(long id, Task updatedTask) {
         updatedTask.setId(id);
         return taskRepository.save(updatedTask);
     }

@@ -1,14 +1,19 @@
 package qwins.taskmanager.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import qwins.taskmanager.model.User;
+import qwins.taskmanager.models.User;
 import qwins.taskmanager.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -17,24 +22,36 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    User findUserById(long id) {
+    public User findUserById(long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    User saveUser(User user) {
-        return userRepository.save(user);
+    Optional<User> findUserByEmail(String email) {
+        return userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst();
     }
 
-    User updateUser(long id, User updatedUser) {
+    public void createNewUser(User user) {
+        userRepository.save(user);
+    }
+
+    public User updateUser(long id, User updatedUser) {
         updatedUser.setId(id);
         return userRepository.save(updatedUser);
     }
-    void deleteUserById(long id) {
+    public void deleteUserById(long id) {
         userRepository.deleteById(id);
+    }
+
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("Пользователь с почтой %s не найден", email)));
     }
 
 }

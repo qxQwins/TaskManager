@@ -1,4 +1,4 @@
-package qwins.taskmanager.model;
+package qwins.taskmanager.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
