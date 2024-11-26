@@ -1,6 +1,7 @@
 package qwins.taskmanager.services;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,14 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -30,8 +27,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
-    Optional<User> findUserByEmail(String email) {
-        return userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst();
+    public User findUserByEmail(String email) {
+        return userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
     }
 
     public void createNewUser(User user) {
@@ -50,8 +47,7 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(
-                String.format("Пользователь с почтой %s не найден", email)));
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
 }

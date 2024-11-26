@@ -1,13 +1,11 @@
 package qwins.taskmanager.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Task {
     @Id
