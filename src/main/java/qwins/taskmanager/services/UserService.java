@@ -2,16 +2,16 @@ package qwins.taskmanager.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import qwins.taskmanager.exceptions.BadRequestException;
+import qwins.taskmanager.exceptions.UserNotFoundException;
 import qwins.taskmanager.models.User;
 import qwins.taskmanager.repositories.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +23,20 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findUserById(long id) {
+    public User findById(long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElse(null);
     }
 
-    public void createNewUser(User user) {
+    public void saveUser(User user) {
+        Boolean exists = userRepository.existsByEmail(user.getEmail());
+        if (exists) {
+            throw new BadRequestException("Email" + user.getEmail() + " already exists");
+        }
         userRepository.save(user);
     }
 
@@ -39,7 +44,8 @@ public class UserService implements UserDetailsService {
         updatedUser.setId(id);
         return userRepository.save(updatedUser);
     }
-    public void deleteUserById(long id) {
+
+    public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
@@ -47,7 +53,7 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        return findByEmail(email);
     }
 
 }

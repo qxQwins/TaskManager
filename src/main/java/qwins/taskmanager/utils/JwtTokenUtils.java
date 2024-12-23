@@ -3,7 +3,11 @@ package qwins.taskmanager.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import qwins.taskmanager.models.User;
 
@@ -13,12 +17,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Data
+@ConfigurationProperties(prefix = "jwt")
 public class JwtTokenUtils {
-    @Value("${jwt.secret}")
+
     private String secret;
 
-    @Value("${jwt.lifetime}")
     private Duration lifetime;
+
+    public boolean validateToken(HttpServletRequest request) {
+        if(request.getCookies() != null) {
+            for(Cookie cookie : request.getCookies()) {
+                if(cookie.getName().equals("token")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
@@ -35,18 +51,18 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public String getEmailFromToken(String token) {
-        return getClaimsFromToken(token).getSubject();
+    public String getEmailFromToken() {
+        return getClaimsFromToken().getSubject();
     }
 
-    public String getRoleFromToken(String token) {
-        return getClaimsFromToken(token).get("role", String.class);
+    public String getRoleFromToken() {
+        return getClaimsFromToken().get("role", String.class);
     }
 
-    private Claims getClaimsFromToken(String token) {
+    private Claims getClaimsFromToken() {
         return Jwts.parser()
                 .setSigningKey(secret)
-                .parseClaimsJws(token)
+                .parseClaimsJws("token")
                 .getBody();
     }
 }
