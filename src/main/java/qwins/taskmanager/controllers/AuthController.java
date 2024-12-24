@@ -2,32 +2,33 @@ package qwins.taskmanager.controllers;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import qwins.taskmanager.DTO.UserDTO;
 import qwins.taskmanager.enums.Role;
+import qwins.taskmanager.exceptions.UserNotFoundException;
 import qwins.taskmanager.models.User;
 import qwins.taskmanager.services.UserService;
 import qwins.taskmanager.utils.JwtTokenUtils;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
-
-    @GetMapping("/show")
-    public List<User> showAllUsers() {
-        return userService.getAllUsers();
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO request) {
@@ -50,18 +51,38 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 
+    @GetMapping("/login")
+    public String getLogin(HttpServletResponse response) {
+        return "login";
+    }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO request, HttpServletResponse response) {
-        User user = userService.findByEmail(request.email());
-        System.out.println("User " + user + " found");
+    public String postLogin(@RequestParam String email, @RequestParam String password,
+                        Model model, HttpServletResponse response) {
 
-        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        User user = userService.findByEmail(email);
+
+        if(user == null) {
+            try {
+                throw new UserNotFoundException("User not found");
+            } catch (BadCredentialsException e) {
+                model.addAttribute("errorMessage", e.getMessage());
+                return "errorPage";
+            }
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            try {
+                throw new BadCredentialsException("Wrong password");
+            } catch (BadCredentialsException e) {
+                model.addAttribute("errorMessage", e.getMessage());
+                return "errorPage";
+            }
         }
 
         String token = jwtTokenUtils.generateToken(user);
         Cookie cookie = new Cookie("token", token);
         response.addCookie(cookie);
-        return ResponseEntity.ok(token);
+        System.out.println("токен добавлен");
+        return "redirect:/tasks";
     }
 }

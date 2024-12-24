@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+<h1>Hell0, <span th:text="${email}"></span>!</h1>
+<table>
+    <tr th:each="t : ${tasks}">
+        <td>
+            <a th:href="@{/tasks/{id}(id=${t.id})}">
+                <span th:text="${t.title} + '(' + ${t.status} + ')' "></span>
+            </a>
+            <br>
+            <small th:text="${t.description}" style="color: gray;"></small>
+        </td>
+    </tr>
+</table>
+<a href="/logout">Logout</a>
+</body>
+</html>
