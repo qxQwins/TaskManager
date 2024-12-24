@@ -19,7 +19,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByTask(Task task) {
-        return task.getComment();
+        return task.getComments();
     }
 
     public void deleteComment(Comment comment) {

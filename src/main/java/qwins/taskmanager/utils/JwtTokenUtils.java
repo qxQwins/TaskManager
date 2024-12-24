@@ -51,18 +51,31 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public String getEmailFromToken() {
-        return getClaimsFromToken().getSubject();
+    private String extractTokenFromCookies(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        throw new RuntimeException("JWT token not found in cookies");
     }
 
-    public String getRoleFromToken() {
-        return getClaimsFromToken().get("role", String.class);
+    public String getEmailFromToken(HttpServletRequest request) {
+        String token = extractTokenFromCookies(request);
+        return getClaimsFromToken(token).getSubject();
     }
 
-    private Claims getClaimsFromToken() {
+    public String getRoleFromToken(HttpServletRequest request) {
+        String token = extractTokenFromCookies(request);
+        return getClaimsFromToken(token).get("role", String.class);
+    }
+
+    private Claims getClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
-                .parseClaimsJws("token")
+                .parseClaimsJws(token)
                 .getBody();
     }
 }

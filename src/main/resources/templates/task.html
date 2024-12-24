@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task description</title>
+</head>
+<body>
+    <h2><span th:text="${task.title} + '(' + ${task.status} + ')'"></span></h2>
+    <h3><span th:text="${task.description}"></span></h3>
+    <table>
+        <tr th:each="c : ${task.getComments()}">
+            <td>
+                <span th:text="${c.author.email}"></span>
+                <br>
+                <small th:text="${c.text}" style="color: gray;"></small>
+            </td>
+        </tr>
+    </table>
+<a href="/tasks">Back</a>
+</body>
+</html>

@@ -34,7 +34,7 @@ public class Task {
     @ToString.Exclude
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Comment> comment;
+    private List<Comment> comments;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
