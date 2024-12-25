@@ -1,7 +1,6 @@
 package qwins.taskmanager.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qwins.taskmanager.models.Task;
 import qwins.taskmanager.repositories.TaskRepository;
@@ -22,7 +21,7 @@ public class TaskService {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public void createNewTask(Task task) {
+    public void saveTask(Task task) {
         taskRepository.save(task);
     }
 

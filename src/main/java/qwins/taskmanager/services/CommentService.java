@@ -1,7 +1,6 @@
 package qwins.taskmanager.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qwins.taskmanager.models.Comment;
 import qwins.taskmanager.models.Task;
@@ -14,7 +13,7 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    public void createNewComment(Comment comment) {
+    public void saveComment(Comment comment) {
         commentRepository.save(comment);
     }
 

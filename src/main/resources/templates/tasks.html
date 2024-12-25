@@ -6,17 +6,31 @@
 </head>
 <body>
 <h1>Hell0, <span th:text="${email}"></span>!</h1>
+<h2>Authored tasks</h2>
 <table>
-    <tr th:each="t : ${tasks}">
+    <tr th:each="at : ${authoredTasks}">
         <td>
-            <a th:href="@{/tasks/{id}(id=${t.id})}">
-                <span th:text="${t.title} + '(' + ${t.status} + ')' "></span>
+            <a th:href="@{/tasks/{id}(id=${at.id})}">
+                <span th:text="${at.title} + '(' + ${at.status} + ')' "></span>
             </a>
             <br>
-            <small th:text="${t.description}" style="color: gray;"></small>
+            <small th:text="${at.description}" style="color: gray;"></small>
         </td>
     </tr>
 </table>
+<h2>Tasks to be executed</h2>
+<table>
+    <tr th:each="et : ${executedTasks}">
+        <td>
+            <a th:href="@{/tasks/{id}(id=${et.id})}">
+                <span th:text="${et.title} + '(' + ${et.status} + ')' "></span>
+            </a>
+            <br>
+            <small th:text="${et.description}" style="color: gray;"></small>
+        </td>
+    </tr>
+</table>
+<br>
 <a href="/logout">Logout</a>
 </body>
 </html>

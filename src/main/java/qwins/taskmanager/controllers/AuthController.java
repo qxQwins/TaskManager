@@ -52,6 +52,16 @@ public class AuthController {
         return "redirect:/login";
     }
 
+    @GetMapping("/accessDenied")
+    public String accessDenied() {
+        return "accessDenied.jsp";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
+
     @GetMapping("/login")
     public String getLogin(HttpServletResponse response) {
         return "login";

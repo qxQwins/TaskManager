@@ -28,9 +28,14 @@ public class TasksController {
                         jwtTokenUtils.getEmailFromToken(request))
                 .getEmail()
         );
-        model.addAttribute("tasks", userService.findByEmail(
+        model.addAttribute("authoredTasks", userService.findByEmail(
                         jwtTokenUtils.getEmailFromToken(request))
                 .getAuthoredTasks()
+        );
+
+        model.addAttribute("executedTasks", userService.findByEmail(
+                        jwtTokenUtils.getEmailFromToken(request))
+                .getExecutedTasks()
         );
         return "tasks";
     }
