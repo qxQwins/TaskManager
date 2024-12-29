@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task description</title>
+</head>
+<body>
+<h2><span th:text="${task.title} + '(' + ${task.status} + ')'"></span></h2>
+<h2><span th:text="'Author: ' + ${task.author.username}"></span></h2>
+---------------------------------------------------------------
+<h3>Description:<span th:text="${task.description}"></span></h3>
+---------------------------------------------------------------
+<form action="/updateStatus" method="post">
+    <!-- Скрытое поле для идентификации задачи -->
+    <input type="hidden" name="taskId" th:value="${task.id}">
+
+    <label for="status">Select Status:</label>
+    <select id="status" th:field="*{task.status}" required>
+        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+---------------------------------------------------------------
+<br>
+<b th:text="${task.getComments().size() > 0
+             ? task.getComments().size() + ' ' + (task.getComments().size() == 1 ? 'Comment' : 'Comments')
+             : 'No comments yet'}">
+</b>
+<br>
+<table>
+    <tr th:each="c : ${task.getComments()}" >
+        <td>
+            <span th:text="${c.author.email}"></span>
+            <br>
+            <small th:text="${c.text}" style="color: gray;"></small>
+        </td>
+    </tr>
+</table>
+---------------------------------------------------------------
+<h3>Add a Comment</h3>
+<form action="/addComment" method="post">
+    <input type="hidden" name="task.id" th:value="${task.id}" />
+    <label for="comment">Comment:</label>
+    <br>
+    <textarea id="comment" name="message" rows="1" required placeholder="Write your comment here"></textarea>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+---------------------------------------------------------------
+<br>
+<a href="/tasks">Back</a>
+</body>
+</html>

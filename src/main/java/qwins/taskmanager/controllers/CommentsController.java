@@ -4,15 +4,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import qwins.taskmanager.models.Comment;
-import qwins.taskmanager.models.Task;
 import qwins.taskmanager.services.CommentService;
 import qwins.taskmanager.services.TaskService;
 import qwins.taskmanager.services.UserService;
-import qwins.taskmanager.utils.JwtTokenUtils;
+import qwins.taskmanager.jwt.JwtTokenUtils;
 
 @Controller
 @RequiredArgsConstructor

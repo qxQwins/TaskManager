@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Hell0, <span th:text="${email}"></span>!</h1>
+---------------------------------------------------------------
 <h2>Authored tasks</h2>
 <table>
     <tr th:each="at : ${authoredTasks}">
@@ -18,6 +19,7 @@
         </td>
     </tr>
 </table>
+---------------------------------------------------------------
 <h2>Tasks to be executed</h2>
 <table>
     <tr th:each="et : ${executedTasks}">
@@ -30,6 +32,9 @@
         </td>
     </tr>
 </table>
+---------------------------------------------------------------
+<br>
+<a href="/tasks/add">Add new task</a>
 <br>
 <a href="/logout">Logout</a>
 </body>

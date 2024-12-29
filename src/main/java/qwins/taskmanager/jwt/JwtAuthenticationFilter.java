@@ -1,4 +1,4 @@
-package qwins.taskmanager.utils;
+package qwins.taskmanager.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

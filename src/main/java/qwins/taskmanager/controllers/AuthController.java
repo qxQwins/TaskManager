@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import qwins.taskmanager.enums.Role;
 import qwins.taskmanager.models.User;
 import qwins.taskmanager.services.UserService;
-import qwins.taskmanager.utils.JwtTokenUtils;
+import qwins.taskmanager.jwt.JwtTokenUtils;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        return "register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -30,14 +30,14 @@ public class AuthController {
                            @RequestParam String confirmPassword, Model model) {
         if (userService.findByEmail(email) != null) {
             model.addAttribute("error", "User already exists");
-            return "register";
+            return "auth/register";
         }
 
         System.out.println("New user " + email + " in process");
 
         if(!password.equals(confirmPassword)) {
             model.addAttribute("error", "Passwords do not match");
-            return "register";
+            return "auth/register";
         }
 
         User newUser = new User();
@@ -54,17 +54,18 @@ public class AuthController {
 
     @GetMapping("/accessDenied")
     public String accessDenied() {
-        return "accessDenied.jsp";
+        return "accessDenied";
     }
 
     @GetMapping("/admin")
     public String admin() {
+        
         return "admin";
     }
 
     @GetMapping("/login")
-    public String getLogin(HttpServletResponse response) {
-        return "login";
+    public String getLogin() {
+        return "auth/login";
     }
 
     @PostMapping("/login")
@@ -75,12 +76,12 @@ public class AuthController {
 
         if (user == null) {
             model.addAttribute("errorMessage", "User not found");
-            return "login";
+            return "auth/login";
         }
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             model.addAttribute("errorMessage", "Wrong password");
-            return "login";
+            return "auth/login";
         }
 
         String token = jwtTokenUtils.generateToken(user);

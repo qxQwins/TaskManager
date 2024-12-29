@@ -1,16 +1,16 @@
 package qwins.taskmanager.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import qwins.taskmanager.enums.Priority;
+import qwins.taskmanager.enums.Status;
+import qwins.taskmanager.models.Task;
 import qwins.taskmanager.services.TaskService;
 import qwins.taskmanager.services.UserService;
-import qwins.taskmanager.utils.JwtTokenUtils;
+import qwins.taskmanager.jwt.JwtTokenUtils;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,12 +37,37 @@ public class TasksController {
                         jwtTokenUtils.getEmailFromToken(request))
                 .getExecutedTasks()
         );
-        return "tasks";
+        return "tasks/tasks";
+    }
+
+    @PostMapping("/updateStatus")
+    public String updateStatus(@RequestParam Long taskId, @RequestParam String status) {
+        Task task = taskService.getTaskById(taskId);
+        task.setStatus(Status.valueOf(status));
+        taskService.saveTask(task);
+        return "redirect:/tasks/" + taskId;
     }
 
     @GetMapping("/tasks/{id}")
     public String showTask(@PathVariable long id, Model model) {
         model.addAttribute("task", taskService.getTaskById(id));
-        return "task";
+        model.addAttribute("statuses", Status.values());
+        return "tasks/task";
+    }
+
+    @GetMapping("/tasks/add")
+    public String showAddTask(Model model) {
+        model.addAttribute("task", new Task());
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("priorities", Priority.values());
+        model.addAttribute("users", userService.getAllUsers());
+        return "tasks/addTask";
+    }
+
+    @PostMapping("/tasks/add")
+    public String addTask(@ModelAttribute Task task, HttpServletRequest request) {
+        task.setAuthor(userService.findByEmail(jwtTokenUtils.getEmailFromToken(request)));
+        taskService.saveTask(task);
+        return "redirect:/tasks";
     }
 }

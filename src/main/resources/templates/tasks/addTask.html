@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить Задание</title>
+</head>
+<body>
+<h2>Добавить Задание</h2>
+<form th:action="@{/tasks/add}" th:object="${task}" method="post">
+    <div>
+        <label for="title">Название</label>
+        <input type="text" id="title" th:field="*{title}" required>
+    </div>
+    <div>
+        <label for="description">Описание</label>
+        <textarea id="description" th:field="*{description}" rows="3" required></textarea>
+    </div>
+    <div>
+        <label for="status">Статус</label>
+        <select id="status" th:field="*{status}" required>
+            <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="priority">Приоритет</label>
+        <select id="priority" th:field="*{priority}" required>
+            <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="executor">Исполнитель</label>
+        <select id="executor" th:field="*{executor.id}" required>
+            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.email}"></option>
+        </select>
+    </div>
+    <button type="submit">Сохранить</button>
+    <a href="/tasks">Назад</a>
+</form>
+</body>
+</html>
