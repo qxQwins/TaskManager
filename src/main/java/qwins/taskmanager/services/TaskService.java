@@ -30,7 +30,11 @@ public class TaskService {
         return taskRepository.save(updatedTask);
     }
 
-    void deleteTaskById(long id) {
+    public List<Task> searchTaskByTitle(String title) {
+        return taskRepository.searchTaskByTitle(title);
+    }
+
+    public void deleteTaskById(long id) {
         taskRepository.deleteById(id);
     }
 

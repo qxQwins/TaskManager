@@ -57,12 +57,6 @@ public class AuthController {
         return "accessDenied";
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        
-        return "admin";
-    }
-
     @GetMapping("/login")
     public String getLogin() {
         return "auth/login";
@@ -87,7 +81,6 @@ public class AuthController {
         String token = jwtTokenUtils.generateToken(user);
         Cookie cookie = new Cookie("token", token);
         response.addCookie(cookie);
-        System.out.println("токен добавлен");
         return "redirect:/tasks";
     }
 }

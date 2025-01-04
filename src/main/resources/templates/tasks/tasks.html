@@ -5,11 +5,11 @@
     <title>Hello</title>
 </head>
 <body>
-<h1>Hell0, <span th:text="${email}"></span>!</h1>
+<h1>Hello, <span th:text="${user.email}"></span>!</h1>
 ---------------------------------------------------------------
 <h2>Authored tasks</h2>
 <table>
-    <tr th:each="at : ${authoredTasks}">
+    <tr th:each="at : ${user.authoredTasks}">
         <td>
             <a th:href="@{/tasks/{id}(id=${at.id})}">
                 <span th:text="${at.title} + '(' + ${at.status} + ')' "></span>
@@ -22,7 +22,7 @@
 ---------------------------------------------------------------
 <h2>Tasks to be executed</h2>
 <table>
-    <tr th:each="et : ${executedTasks}">
+    <tr th:each="et : ${user.executedTasks}">
         <td>
             <a th:href="@{/tasks/{id}(id=${et.id})}">
                 <span th:text="${et.title} + '(' + ${et.status} + ')' "></span>
@@ -33,6 +33,11 @@
     </tr>
 </table>
 ---------------------------------------------------------------
+<div th:if="${user.role.toString() == 'ADMIN'}">
+    <form th:action="@{/tasks/admin}" method="get">
+        <button type="submit">Admin page</button>
+    </form>
+</div>
 <br>
 <a href="/tasks/add">Add new task</a>
 <br>

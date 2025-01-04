@@ -24,18 +24,8 @@ public class TasksController {
 
     @GetMapping("/tasks")
     public String showTasks(Model model, HttpServletRequest request) {
-        model.addAttribute("email", userService.findByEmail(
+        model.addAttribute("user", userService.findByEmail(
                         jwtTokenUtils.getEmailFromToken(request))
-                .getEmail()
-        );
-        model.addAttribute("authoredTasks", userService.findByEmail(
-                        jwtTokenUtils.getEmailFromToken(request))
-                .getAuthoredTasks()
-        );
-
-        model.addAttribute("executedTasks", userService.findByEmail(
-                        jwtTokenUtils.getEmailFromToken(request))
-                .getExecutedTasks()
         );
         return "tasks/tasks";
     }
@@ -49,14 +39,17 @@ public class TasksController {
     }
 
     @GetMapping("/tasks/{id}")
-    public String showTask(@PathVariable long id, Model model) {
+    public String getShowTask(@PathVariable long id, Model model, HttpServletRequest request) {
+        model.addAttribute("user", userService.findByEmail(
+                jwtTokenUtils.getEmailFromToken(request))
+        );
         model.addAttribute("task", taskService.getTaskById(id));
         model.addAttribute("statuses", Status.values());
         return "tasks/task";
     }
 
     @GetMapping("/tasks/add")
-    public String showAddTask(Model model) {
+    public String getAddTask(Model model) {
         model.addAttribute("task", new Task());
         model.addAttribute("statuses", Status.values());
         model.addAttribute("priorities", Priority.values());
@@ -65,9 +58,15 @@ public class TasksController {
     }
 
     @PostMapping("/tasks/add")
-    public String addTask(@ModelAttribute Task task, HttpServletRequest request) {
+    public String postAddTask(@ModelAttribute Task task, HttpServletRequest request) {
         task.setAuthor(userService.findByEmail(jwtTokenUtils.getEmailFromToken(request)));
         taskService.saveTask(task);
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("/tasks/delete/{id}")
+    public String deleteTask(@PathVariable long id, HttpServletRequest request) {
+        taskService.deleteTaskById(id);
         return "redirect:/tasks";
     }
 }

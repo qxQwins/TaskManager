@@ -5,6 +5,24 @@
     <title>Admin page</title>
 </head>
 <body>
-hey, admin.
+<h2>List of tasks</h2>
+<form action="/tasks/admin" method="get">
+    <input type="text" id="searchRequest" name="searchRequest" placeholder="Input search request"/>
+    <button type="submit">Search</button>
+</form>
+<table>
+    <tr th:each="t : ${tasks}">
+        <td>
+            <a th:href="@{/tasks/{id}(id=${t.id})}">
+                <span th:text="${t.title} + '(' + ${t.status} + ')' "></span>
+            </a>
+            <br>
+            <small th:text="${t.description}" style="color: gray;"></small>
+        </td>
+    </tr>
+</table>
+
+<button type="button" onclick="history.back()">Back</button>
+
 </body>
 </html>
