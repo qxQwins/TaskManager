@@ -8,18 +8,16 @@
 <h2>
     <span th:text="${task.title} + '(' + ${task.status} + ')'"></span>
 </h2>
-<span th:if="${user.role.toString() == 'ADMIN' or user == task.author}">
-            <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post">
-                <button type="submit">Delete</button>
-            </form>
-</span>
+<form th:if="${user.role.toString() == 'ADMIN' or user == task.author}" th:action="@{/tasks/{id}/delete(id=${task.id})}"
+      method="post">
+    <button type="submit">Delete</button>
+</form>
 <h2><span th:text="'Author: ' + ${task.author.username}"></span></h2>
 <h2><span th:text="'Executor: ' + ${task.executor.username}"></span></h2>
 ---------------------------------------------------------------
 <h3>Description:<span th:text="${task.description}"></span></h3>
 ---------------------------------------------------------------
 <form action="/updateStatus" method="post">
-    <!-- Скрытое поле для идентификации задачи -->
     <input type="hidden" name="taskId" th:value="${task.id}">
 
     <label for="status">Select Status:</label>

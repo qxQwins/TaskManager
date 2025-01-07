@@ -47,5 +47,11 @@ public class Task {
     @JoinColumn(name = "executor_id")
     @JsonBackReference
     private User executor;
+
+    public Task(){}
+
+    public Task(String title){
+        this.title = title;
+    }
 }
 

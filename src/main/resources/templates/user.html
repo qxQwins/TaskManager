@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<h2><span th:text="${user.email}"></span></h2>
+
+<form action="/updateRole" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}">
+    <label for="status">Set Role:</label>
+    <select id="status" th:field="*{user.role}" required>
+        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+<form th:action="@{/admin}" method="get">
+    <button type="submit">Back</button>
+</form>
+<form th:if="${user.role.toString() == 'USER'}" th:action="@{/user/{id}/delete(id=${user.id})}"
+      method="post">
+    <button type="submit">Delete</button>
+</form>
+</body>
+</html>

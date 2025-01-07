@@ -26,4 +26,12 @@ public class Comment {
     @JoinColumn(name = "task_id")
     @JsonBackReference
     private Task task;
+
+    public Comment() {
+
+    }
+
+    public Comment(String text) {
+        this.text = text;
+    }
 }

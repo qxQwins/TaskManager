@@ -16,16 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-@Entity(name = "\"user\"")
+@Entity
+@Table(name = "\"user\"")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
-
-    public User() {}
-
-    public User(String email, String password) {
-        this.email = email;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,6 +42,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "executor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Task> executedTasks;
+
+    public User() {}
+
+    public User(String email){
+        this.email = email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

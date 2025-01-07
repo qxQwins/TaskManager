@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import qwins.taskmanager.enums.Role;
+import qwins.taskmanager.jwt.JwtTokenUtils;
 import qwins.taskmanager.models.User;
 import qwins.taskmanager.services.UserService;
-import qwins.taskmanager.jwt.JwtTokenUtils;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class AuthController {
     private final JwtTokenUtils jwtTokenUtils;
 
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register() {
         return "auth/register";
     }
 

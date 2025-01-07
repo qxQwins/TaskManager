@@ -6,8 +6,8 @@
 </head>
 <body>
 <h2>List of tasks</h2>
-<form action="/tasks/admin" method="get">
-    <input type="text" id="searchRequest" name="searchRequest" placeholder="Input search request"/>
+<form action="/admin" method="get">
+    <input type="text" id="tasksSearchRequest" name="tasksSearchRequest" placeholder="Input search request for tasks"/>
     <button type="submit">Search</button>
 </form>
 <table>
@@ -22,7 +22,22 @@
     </tr>
 </table>
 
-<button type="button" onclick="history.back()">Back</button>
-
+<h2>List of users</h2>
+<form action="/admin" method="get">
+    <input type="text" id="usersSearchRequest" name="usersSearchRequest" placeholder="Input search request for users"/>
+    <button type="submit">Search</button>
+</form>
+<table>
+    <tr th:each="u : ${users}">
+        <td>
+            <a th:href="@{/user/{id}(id=${u.id})}">
+                <span th:text="${u.email}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
+    <form th:action="@{/tasks}" method="get">
+        <button type="submit">Back</button>
+    </form>
 </body>
 </html>
