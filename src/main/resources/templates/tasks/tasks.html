@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Tasks</title>
 </head>
 <body>
 <h1>Hello, <span th:text="${user.email}"></span>!</h1>
@@ -34,7 +34,7 @@
 </table>
 ---------------------------------------------------------------
 <div th:if="${user.role.toString() == 'ADMIN'}">
-    <form th:action="@{/tasks/admin}" method="get">
+    <form th:action="@{/admin}" method="get">
         <button type="submit">Admin page</button>
     </form>
 </div>

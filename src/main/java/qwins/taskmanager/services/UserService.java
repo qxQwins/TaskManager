@@ -39,15 +39,18 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User updateUser(long id, User updatedUser) {
+    public void updateUser(long id, User updatedUser) {
         updatedUser.setId(id);
-        return userRepository.save(updatedUser);
+        userRepository.save(updatedUser);
     }
 
     public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
+    public List<User> searchUserByEmail(String email) {
+        return userRepository.searchUserByEmail(email);
+    }
 
     @Override
     @Transactional

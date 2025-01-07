@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import qwins.taskmanager.enums.Priority;
 import qwins.taskmanager.enums.Status;
+import qwins.taskmanager.jwt.JwtTokenUtils;
 import qwins.taskmanager.models.Task;
 import qwins.taskmanager.services.TaskService;
 import qwins.taskmanager.services.UserService;
-import qwins.taskmanager.jwt.JwtTokenUtils;
 
 @Controller
 @RequiredArgsConstructor
@@ -64,8 +64,8 @@ public class TasksController {
         return "redirect:/tasks";
     }
 
-    @PostMapping("/tasks/delete/{id}")
-    public String deleteTask(@PathVariable long id, HttpServletRequest request) {
+    @PostMapping("/tasks/{id}/delete")
+    public String deleteTask(@PathVariable long id) {
         taskService.deleteTaskById(id);
         return "redirect:/tasks";
     }
