@@ -1,0 +1,29 @@
+#version: '3.1'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=taskmanager
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  app:
+    image: 'sha256:3e8d8dd3d38e1aca675fca67f2c007bd562d7ba5c2c5af90077707b8feb50a8e'
+    container_name: taskmanager
+    ports:
+      - '8080:8080'
+    environment:
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_URL=jdbc:postgresql://db:5432/taskmanager
+    depends_on:
+      - db
+
+volumes:
+  db_data:
