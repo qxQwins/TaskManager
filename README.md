@@ -57,6 +57,18 @@ Make sure you have the following installed on your system:
    - **Open your browser and navigate to http://localhost:8080.**
    - **You can log in or register a new user.**
 
+### Usage
+
+#### User Accounts
+
+##### Admin
+- Default admin credentials (can be set in `data.sql` or another initial data setup file).
+- Admins have access to the admin dashboard for managing tasks and users.
+
+##### Regular Users
+- Register directly via the application.
+- Regular users can create, view, and delete their own tasks.
+
 ## Key Functionalities  
 
 ### User Role Features  
