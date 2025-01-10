@@ -5,6 +5,58 @@
 ## Overview  
 This project is a comprehensive **task management web application** designed to help users efficiently manage tasks with a clear distinction between user and admin roles. The application is built using **modern backend technologies** and focuses on secure authentication, intuitive features, and maintainability.  
 
+## Installation  
+
+To set up and run the Task Manager Web Application locally, follow these steps:  
+
+### Prerequisites  
+Make sure you have the following installed on your system:  
+- **Java JDK 17+**  
+- **Maven 3.8+**  
+- **PostgreSQL 14+**  
+- **Git**  
+
+### Steps  
+
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/your-username/task-manager.git
+   cd task-manager
+   
+2. **Set Up the Database**  
+
+   - Create a PostgreSQL database (e.g., `task_manager_db`).
+   - You can install environment variables via IDE or .env file:
+    ```properties
+     ${DATABASE_URL} for url
+     ${DATABASE_USERNAME} for username
+     ${DATABASE_PASSWORD} for password
+     ```
+   - Or update the database configuration in the `application.properties` file:  
+     ```properties
+     spring.datasource.url=jdbc:postgresql://localhost:5432/task_manager_db
+     spring.datasource.username=your_username
+     spring.datasource.password=your_password
+     spring.jpa.hibernate.ddl-auto=update
+     ```
+  
+
+3. **Build the Project**  
+
+   Use Maven to build the project:  
+   ```bash
+   mvn clean install
+
+4. **Run the application**  
+
+   Start the application using:  
+   ```bash
+   mvn spring-boot:run
+
+5. **Access the Application**
+   - **Open your browser and navigate to http://localhost:8080.**
+   - **You can log in or register a new user.**
+
 ## Key Functionalities  
 
 ### User Role Features  
